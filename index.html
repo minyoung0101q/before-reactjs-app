@@ -9,10 +9,12 @@
   <script type="text/babel">
     function App() {
       const [minutes, setMinutes] = React.useState(0);
+      const [flipped, setFlipped] = React.useState(false);
       const onChange = (event) => {
         setMinutes(event.target.value); //2. 값을 가져와서 데이터를 업데이트 시킴
       };
       const reset = () => setMinutes(0); //업데이트가 0으로, state를 리스닝 하거나 연결한 모든 것들은 전부 0으로 돌려짐
+      const onFlip = () => setFlipped((current) => !current); //setFlipped(!flipped); => 오류날 수 있음, 현재 값을 다른 값으로 바꿔줌 => 이럴 때는 current
       return (
         //여기부터 리렌더링 된다. 바뀐 부분만 리렌더링함
         <div>
@@ -25,6 +27,7 @@
               placeholder="Minutes"
               type="number"
               onChange={onChange} //1. event를 들어준다. event도 리스닝하고 있다.
+              disabled={flipped}
             />
           </div>
 
@@ -35,10 +38,11 @@
               id="hours"
               placeholder="Hours"
               type="number"
-              disabled
+              disabled={!flipped}
             />
           </div>
           <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>Flip</button>
         </div>
       );
     }
