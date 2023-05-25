@@ -8,22 +8,21 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     function App() {
-      const [minutes, setMinutes] = React.useState();
+      const [minutes, setMinutes] = React.useState(0);
       const onChange = (event) => {
-        setMinutes(event.target.value); //값을 가져와서 데이터를 업데이트 시킴
+        setMinutes(event.target.value); //2. 값을 가져와서 데이터를 업데이트 시킴
       };
       return (
         <div>
           <h1 className="hi">Super Converter</h1>
           <label htmlFor="minutes">Minutes</label>
           <input
-            value={minutes}
+            value={minutes} //3. UI에 보여준다. 통제되는 event를 가지고 있고
             id="minutes"
             placeholder="Minutes"
             type="number"
-            onChange={onChange}
+            onChange={onChange} //1. event를 들어준다. event도 리스닝하고 있다.
           />
-          <h4>You want to convert {minutes}</h4>
           <label htmlFor="hours">Hours</label>
           <input placeholder="Hours" type="number" />
         </div>
