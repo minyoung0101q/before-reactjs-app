@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+
+    const Span = () => (
+      <span
+        style={{
+          backgroundColor: "tomato",
+        }}
+        onClick={() => console.log("span태그가 클릭되었습니다.")}
+      >
+        span 태그를 click 하세요!
+      </span>
+    );
+
+    const Btn = () => (
+      <button
+        style={{
+          backgroundColor: "blue",
+        }}
+        onClick={() => console.log("버튼이 클릭 되었습니다.")}
+      >
+        Click Button!
+      </button>
+    );
+
+    const Container = () => (
+      <div>
+        <Span />
+        <Btn />
+      </div>
+    );
+    ReactDOM.render(<Container />, root);
+  </script>
+</html>
