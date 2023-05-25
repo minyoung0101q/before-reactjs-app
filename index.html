@@ -12,19 +12,33 @@
       const onChange = (event) => {
         setMinutes(event.target.value); //2. 값을 가져와서 데이터를 업데이트 시킴
       };
+      const reset = () => setMinutes(0); //업데이트가 0으로, state를 리스닝 하거나 연결한 모든 것들은 전부 0으로 돌려짐
       return (
+        //여기부터 리렌더링 된다. 바뀐 부분만 리렌더링함
         <div>
           <h1 className="hi">Super Converter</h1>
-          <label htmlFor="minutes">Minutes</label>
-          <input
-            value={minutes} //3. UI에 보여준다. 통제되는 event를 가지고 있고
-            id="minutes"
-            placeholder="Minutes"
-            type="number"
-            onChange={onChange} //1. event를 들어준다. event도 리스닝하고 있다.
-          />
-          <label htmlFor="hours">Hours</label>
-          <input placeholder="Hours" type="number" />
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              value={minutes} //3. UI에 보여준다. 통제되는 event를 가지고 있고
+              id="minutes"
+              placeholder="Minutes"
+              type="number"
+              onChange={onChange} //1. event를 들어준다. event도 리스닝하고 있다.
+            />
+          </div>
+
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input //Math.round() : 반올림
+              value={Math.round(minutes / 60)} //이제 state인 minutes를 값으로 리스닝하는 input이 두 개가 있다.
+              id="hours"
+              placeholder="Hours"
+              type="number"
+              disabled
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
         </div>
       );
     }
