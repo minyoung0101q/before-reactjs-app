@@ -36,7 +36,7 @@
           <div>
             <label htmlFor="hours">Hours</label>
             <input //Math.round() : 반올림
-              value={inverted ? amount : Math.round(amount / 60)} //이제 state인 minutes를 값으로 리스닝하는 input이 두 개가 있다.
+              value={inverted ? amount : amount / 60} //이제 state인 minutes를 값으로 리스닝하는 input이 두 개가 있다.
               id="hours"
               placeholder="Hours"
               type="number"
@@ -50,7 +50,44 @@
       );
     }
     function KmToMiles() {
-      return <h3>KM 2 M</h3>;
+      const [amount, setAmount] = React.useState(0);
+      const [inverted, setInverted] = React.useState(false);
+      const onChange = (event) => {
+        setAmount(event.target.value);
+      };
+      const reset = () => setAmount(0);
+      const onFlip = () => {
+        reset();
+        setInverted((current) => !current);
+      };
+      return (
+        <div>
+          <div>
+            <label htmlFor="km">Km</label>
+            <input
+              value={inverted ? Math.round(amount * 1.609) : amount}
+              id="km"
+              placeholder="Km"
+              type="number"
+              onChange={onChange}
+              disabled={inverted} //{inverted === true} : Miles에서 Km으로 변환 중인 상태
+            />
+          </div>
+          <div>
+            <label htmlFor="miles">Miles</label>
+            <input
+              value={inverted ? amount : Math.round(amount / 1.609)}
+              id="miles"
+              placeholder="Miles"
+              type="number"
+              disabled={!inverted} //{inverted === false} : Km에서 Miles로 변환 중인 상태
+              onChange={onChange}
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
+        </div>
+      );
     }
     function App() {
       const [index, setIndex] = React.useState("xx"); //index는 데이터, setIndex는 데이터를 수정하는 function.
