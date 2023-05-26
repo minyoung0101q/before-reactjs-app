@@ -9,15 +9,15 @@
   <script type="text/babel">
     function App() {
       const [amount, setAmount] = React.useState(0);
-      const [flipped, setFlipped] = React.useState(false);
+      const [inverted, setInverted] = React.useState(false);
       const onChange = (event) => {
         setAmount(event.target.value); //2. 값을 가져와서 데이터를 업데이트 시킴
       };
       const reset = () => setAmount(0); //업데이트가 0으로, state를 리스닝 하거나 연결한 모든 것들은 전부 0으로 돌려짐
       const onFlip = () => {
         reset();
-        setFlipped((current) => !current);
-      }; //setFlipped(!flipped); => 오류날 수 있음, 현재 값을 다른 값으로 바꿔줌 => 이럴 때는 current
+        setInverted((current) => !current);
+      }; //setFlipped(!inverted); => 오류날 수 있음, 현재 값을 다른 값으로 바꿔줌 => 이럴 때는 current
       return (
         //여기부터 리렌더링 된다. 바뀐 부분만 리렌더링함
         <div>
@@ -25,28 +25,28 @@
           <div>
             <label htmlFor="minutes">Minutes</label>
             <input
-              value={flipped ? amount * 60 : amount} //3. UI에 보여준다. 통제되는 event를 가지고 있고
+              value={inverted ? amount * 60 : amount} //3. UI에 보여준다. 통제되는 event를 가지고 있고
               id="minutes"
               placeholder="Minutes"
               type="number"
               onChange={onChange} //1. event를 들어준다. event도 리스닝하고 있다.
-              disabled={flipped} //{flipped === true}
+              disabled={inverted} //{inverted === true} : 시에서 분으로 변환 중인 상태
             />
           </div>
 
           <div>
             <label htmlFor="hours">Hours</label>
             <input //Math.round() : 반올림
-              value={flipped ? amount : Math.round(amount / 60)} //이제 state인 minutes를 값으로 리스닝하는 input이 두 개가 있다.
+              value={inverted ? amount : Math.round(amount / 60)} //이제 state인 minutes를 값으로 리스닝하는 input이 두 개가 있다.
               id="hours"
               placeholder="Hours"
               type="number"
-              disabled={!flipped} //{flipped === false}
+              disabled={!inverted} //{inverted === false} : 분에서 시로 변환 중인 상태
               onChange={onChange}
             />
           </div>
           <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>Flip</button>
+          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
         </div>
       );
     }
