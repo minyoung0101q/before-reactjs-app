@@ -7,109 +7,37 @@
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function MinutesToHours() {
-      const [amount, setAmount] = React.useState(0);
-      const [inverted, setInverted] = React.useState(false);
-      const onChange = (event) => {
-        setAmount(event.target.value); //2. 값을 가져와서 데이터를 업데이트 시킴
-      };
-      const reset = () => setAmount(0); //업데이트가 0으로, state를 리스닝 하거나 연결한 모든 것들은 전부 0으로 돌려짐
-      const onFlip = () => {
-        reset();
-        setInverted((current) => !current);
-      }; //setFlipped(!inverted); => 오류날 수 있음, 현재 값을 다른 값으로 바꿔줌 => 이럴 때는 current
+    function Btn(props) {
+      console.log(props);
+      /*
+      Btn({banana:"save changes"}) => 이렇게 받는 것과 같음 -> "Btn"은 함수이기 때문에.
+      {banana:"save changes"} => Btn 함수의 첫 번째 argument(인자) 속으로 들어감.
+      
+      인자,argument를 받음 -> 리액트가 넣어줌
+      이 인자 이름을 props라고 부름, Btn으로부터 전달 받는 properties.
+      */
       return (
-        //여기부터 리렌더링 된다. 바뀐 부분만 리렌더링함
-        <div>
-          <div>
-            <label htmlFor="minutes">Minutes</label>
-            <input
-              value={inverted ? amount * 60 : amount} //3. UI에 보여준다. 통제되는 event를 가지고 있고
-              id="minutes"
-              placeholder="Minutes"
-              type="number"
-              onChange={onChange} //1. event를 들어준다. event도 리스닝하고 있다.
-              disabled={inverted} //{inverted === true} : 시에서 분으로 변환 중인 상태
-            />
-          </div>
-
-          <div>
-            <label htmlFor="hours">Hours</label>
-            <input //Math.round() : 반올림
-              value={inverted ? amount : amount / 60} //이제 state인 minutes를 값으로 리스닝하는 input이 두 개가 있다.
-              id="hours"
-              placeholder="Hours"
-              type="number"
-              disabled={!inverted} //{inverted === false} : 분에서 시로 변환 중인 상태
-              onChange={onChange}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
-        </div>
-      );
-    }
-    function KmToMiles() {
-      const [amount, setAmount] = React.useState(0);
-      const [inverted, setInverted] = React.useState(false);
-      const onChange = (event) => {
-        setAmount(event.target.value);
-      };
-      const reset = () => setAmount(0);
-      const onFlip = () => {
-        reset();
-        setInverted((current) => !current);
-      };
-      return (
-        <div>
-          <div>
-            <label htmlFor="km">Km</label>
-            <input
-              value={inverted ? Math.round(amount * 1.609) : amount}
-              id="km"
-              placeholder="Km"
-              type="number"
-              onChange={onChange}
-              disabled={inverted} //{inverted === true} : Miles에서 Km으로 변환 중인 상태
-            />
-          </div>
-          <div>
-            <label htmlFor="miles">Miles</label>
-            <input
-              value={inverted ? amount : Math.round(amount / 1.609)}
-              id="miles"
-              placeholder="Miles"
-              type="number"
-              disabled={!inverted} //{inverted === false} : Km에서 Miles로 변환 중인 상태
-              onChange={onChange}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
-        </div>
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {props.banana} {/* 이 object는 banana라는 키를 가지고 있다. */}
+        </button>
       );
     }
     function App() {
-      const [index, setIndex] = React.useState("xx"); //index는 데이터, setIndex는 데이터를 수정하는 function.
-      const onSelect = (event) => {
-        setIndex(event.target.value);
-      };
-      console.log("render w/", index);
       return (
-        //데이터가 함수에 의해 수정 되면 ReactJS가 UI를 새로고침해줌.
         <div>
-          <h1>Super Converter</h1>
-          <select value={index} onChange={onSelect}>
-            <option value="xx">Select your units</option>
-            <option value="0">Minutes & Hours</option>
-            <option value="1">Km & Miles</option>
-          </select>
-          <hr />
-          {index === "xx" ? "Please select your units" : null}
-          {index === "0" ? <MinutesToHours /> : null}
-          {index === "1" ? <KmToMiles /> : null}
+          <Btn banana="Save Changes" /> {/* x={false} */}
+          {/*banana를 Btn에게 보냄 -> Btn은 banana를 사용해야 함  */}
+          <Btn banana="Continue" /> {/* y={7} */}
         </div>
-      ); //데이터가 함수에 의해 수정 되면 ReactJS가 UI를 새로고침해줌.
+      );
     }
     const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
