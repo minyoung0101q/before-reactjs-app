@@ -7,8 +7,11 @@
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function Btn(props) {
-      console.log(props);
+    function Btn({ banana }) {
+      /* props는 오브젝트이기 때문에 우리는 "{}" 중괄호를 연다. 
+        단지 shortcut일 뿐,, property를 오브젝트로부터 꺼낸 것, 왜냐하면 props는 오브젝트이기 때문에.
+      */
+      console.log(banana);
       /*
       Btn({banana:"save changes"}) => 이렇게 받는 것과 같음 -> "Btn"은 함수이기 때문에.
       {banana:"save changes"} => Btn 함수의 첫 번째 argument(인자) 속으로 들어감.
@@ -26,7 +29,7 @@
             borderRadius: 10,
           }}
         >
-          {props.banana} {/* 이 object는 banana라는 키를 가지고 있다. */}
+          {banana} {/* 이 object는 banana라는 키를 가지고 있다. */}
         </button>
       );
     }
