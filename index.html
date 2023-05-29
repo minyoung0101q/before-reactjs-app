@@ -7,7 +7,9 @@
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function Btn({ banana }) {
+    function Btn({ banana, big }) {
+      console.log(banana, big);
+      /* 첫 번째 Btn의 big은 true가 될 거고, 두 번째 Btn의 big은 undefined가 될 것. */
       /* props는 오브젝트이기 때문에 우리는 "{}" 중괄호를 연다. 
         단지 shortcut일 뿐,, property를 오브젝트로부터 꺼낸 것, 왜냐하면 props는 오브젝트이기 때문에.
       */
@@ -27,6 +29,9 @@
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
+            fontSize: big
+              ? 18
+              : 16 /* style 안에서 if else 사용 가능, prop을 기반으로. */,
           }}
         >
           {banana} {/* 이 object는 banana라는 키를 가지고 있다. */}
@@ -36,9 +41,10 @@
     function App() {
       return (
         <div>
-          <Btn banana="Save Changes" /> {/* x={false} */}
+          <Btn banana="Save Changes" big={true} /> {/* x={false} */}
           {/*banana를 Btn에게 보냄 -> Btn은 banana를 사용해야 함  */}
           <Btn banana="Continue" /> {/* y={7} */}
+          <Btn banana="return" big={false} />
         </div>
       );
     }
