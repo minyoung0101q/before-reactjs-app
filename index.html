@@ -8,11 +8,17 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     function Btn({ text, changeValue }) {
-      //prop들은 직접적으로 return문 안으로 들어가지 않는다. => 우리가 prop을 넣어줘야 함
-      console.log(text, "was rendered"); //데이터를 수정하는 함수가 불려질 때까지 re-render => 다시 그려진다.
+      console.log(text, "was rendered");
+      /* Save Changes was rendered 
+        Continue was rendered
+        Revert Changes was rendered
+        Continue was rendered!
+        =>우리는 만약 컴포넌트가 상태를 바꾼다면 다시 render하리라는 것을 알고 있다! => App : 부모 컴포넌트를 보면, 부모가 state를 변경하고 있고, return 안에 있는 모든 게 다시 그려지고 있다. Btn과 Continue 모두!
+        ***Memo : <Btn text="Continue" /> => prop이 변경되지 않는 한에서! => 이 컴포넌트가 다시 그려지는 것을 원치 않는다고 React에게 memorize 시켜줄 수 있음!
+        */
       return (
-        <button //Btn은 changeValue라는 리스너를 가지게 된다.
-          onClick={changeValue} //이벤트리스너를 달아줘야 함!
+        <button
+          onClick={changeValue}
           style={{
             backgroundColor: "tomato",
             color: "white",
@@ -25,21 +31,22 @@
         </button>
       );
     }
+
+    const MemorizedBtn =
+      React.memo(
+        Btn
+      ); /* 꼭 기억할 필요는 없음, rerender을 잘 알아두어야 하기에 해본 것 
+    기억해두면 좋은 점: 추후에 내 애플리케이션이 느려지는 원인이 될 수도 있는 것을 고칠 수 있음!*/
+
     function App() {
       const [value, setValue] = React.useState("Save Changes");
       const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          {" "}
-          {/* <Btn text={value} onClick={changeValue} /> => 컴포넌트에 뭔가를 넣던 그것은 단지 prop이다!! */}
-          <Btn text={value} changeValue={changeValue} />{" "}
-          {/* onClick은 이벤트 리스너가 아니고 prop이다! 
-          여기서 onClick은 prop의 이름일 뿐이고, Btn안으로 전달되고 있는 것
-          만약, html 요소에 onClick을 넣는다면 이게 이벤트 리스너임!
-          컴포넌트에 onClick을 넣고 있으니, 이벤트 리스너가 아님!
-          onClick={changeVvalue} => 단지 하나의 prop*/}
-          {/* state로부터 string을 전달하고 있음 */}
-          <Btn text="Continue" />
+          <MemorizedBtn text={value} changeValue={changeValue} />
+          <MemorizedBtn text="Continue" />{" "}
+          {/* 여기 prop은 절대 변하지 않음, 연결된 state가 없기에 
+          우리는 이 Btn의 re-render를 멈춰 달라고 말할 수 있음*/}
         </div>
       );
     }
@@ -47,18 +54,3 @@
     ReactDOM.render(<App />, root);
   </script>
 </html>
-
-<!--
-  #4.1 Memo
-  props에 뭘 또 넣을 수 있는지 볼 것.
-  <Btn banana="Save Changes" big={true} /> => 보면 알 수 있듯이, true나 false 보낼 수 있고! string도 보낼 수 있고!
-  ***원한다면 우리는 function도 보낼 수 있다!! 그리고 Btn을 렌더링하는 컴포넌트가 어떻게 되는지도 알아볼 것!
-  예를 들어 App() => 부모 컴포넌트가 state(상태)를 변경할 때 어떤 일이 일어나는지도 볼 것!
-  ***
-
-  #코드
-  내 Btn들에 onClick function을 달아준다. onclick function은 내 App 컴포넌트에 있는 뭔가의 state를 바꾸게 될 것.
-  강조!! => 컴포넌트에 prop으로서 넣는다고 하면 그건 절대 자동으로 return 안으로 들어가지 않는다. 
-  항상 prop을 써줘야 한다.
-
--->
