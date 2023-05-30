@@ -7,44 +7,39 @@
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function Btn({ banana, big }) {
-      console.log(banana, big);
-      /* 첫 번째 Btn의 big은 true가 될 거고, 두 번째 Btn의 big은 undefined가 될 것. */
-      /* props는 오브젝트이기 때문에 우리는 "{}" 중괄호를 연다. 
-        단지 shortcut일 뿐,, property를 오브젝트로부터 꺼낸 것, 왜냐하면 props는 오브젝트이기 때문에.
-      */
-      console.log(banana);
-      /*
-      Btn({banana:"save changes"}) => 이렇게 받는 것과 같음 -> "Btn"은 함수이기 때문에.
-      {banana:"save changes"} => Btn 함수의 첫 번째 argument(인자) 속으로 들어감.
-      
-      인자,argument를 받음 -> 리액트가 넣어줌
-      이 인자 이름을 props라고 부름, Btn으로부터 전달 받는 properties.
-      */
+    function Btn({ text, changeValue }) {
+      //prop들은 직접적으로 return문 안으로 들어가지 않는다. => 우리가 prop을 넣어줘야 함
+      console.log(text, "was rendered"); //데이터를 수정하는 함수가 불려질 때까지 re-render => 다시 그려진다.
       return (
-        <button
+        <button //Btn은 changeValue라는 리스너를 가지게 된다.
+          onClick={changeValue} //이벤트리스너를 달아줘야 함!
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
-            fontSize: big
-              ? 18
-              : 16 /* style 안에서 if else 사용 가능, prop을 기반으로. */,
           }}
         >
-          {banana} {/* 이 object는 banana라는 키를 가지고 있다. */}
+          {text}
         </button>
       );
     }
     function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <Btn banana="Save Changes" big={true} /> {/* x={false} */}
-          {/*banana를 Btn에게 보냄 -> Btn은 banana를 사용해야 함  */}
-          <Btn banana="Continue" /> {/* y={7} */}
-          <Btn banana="return" big={false} />
+          {" "}
+          {/* <Btn text={value} onClick={changeValue} /> => 컴포넌트에 뭔가를 넣던 그것은 단지 prop이다!! */}
+          <Btn text={value} changeValue={changeValue} />{" "}
+          {/* onClick은 이벤트 리스너가 아니고 prop이다! 
+          여기서 onClick은 prop의 이름일 뿐이고, Btn안으로 전달되고 있는 것
+          만약, html 요소에 onClick을 넣는다면 이게 이벤트 리스너임!
+          컴포넌트에 onClick을 넣고 있으니, 이벤트 리스너가 아님!
+          onClick={changeVvalue} => 단지 하나의 prop*/}
+          {/* state로부터 string을 전달하고 있음 */}
+          <Btn text="Continue" />
         </div>
       );
     }
@@ -52,3 +47,18 @@
     ReactDOM.render(<App />, root);
   </script>
 </html>
+
+<!--
+  #4.1 Memo
+  props에 뭘 또 넣을 수 있는지 볼 것.
+  <Btn banana="Save Changes" big={true} /> => 보면 알 수 있듯이, true나 false 보낼 수 있고! string도 보낼 수 있고!
+  ***원한다면 우리는 function도 보낼 수 있다!! 그리고 Btn을 렌더링하는 컴포넌트가 어떻게 되는지도 알아볼 것!
+  예를 들어 App() => 부모 컴포넌트가 state(상태)를 변경할 때 어떤 일이 일어나는지도 볼 것!
+  ***
+
+  #코드
+  내 Btn들에 onClick function을 달아준다. onclick function은 내 App 컴포넌트에 있는 뭔가의 state를 바꾸게 될 것.
+  강조!! => 컴포넌트에 prop으로서 넣는다고 하면 그건 절대 자동으로 return 안으로 들어가지 않는다. 
+  항상 prop을 써줘야 한다.
+
+-->
